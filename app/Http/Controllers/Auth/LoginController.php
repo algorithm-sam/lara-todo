@@ -4,6 +4,8 @@ namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Foundation\Auth\AuthenticatesUsers;
+use Illuminate\Http\Request;
+use Illuminate\Support\Str;
 
 class LoginController extends Controller
 {
@@ -36,4 +38,19 @@ class LoginController extends Controller
     {
         $this->middleware('guest')->except('logout');
     }
+
+    public function username()
+    {
+        if(is_numeric(request()->email) == 'true'){
+            request()->request->set('phone_number',request()->email);
+            return 'phone_number';
+        }else if(Str::contains(request()->email, '@')){
+            return 'email';
+        }
+        else{
+            request()->request->set('username',request()->email);
+            return 'username';
+        }
+    }
+
 }
